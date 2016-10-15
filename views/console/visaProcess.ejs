@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<title>签证进度-大连海之韵国际旅行社</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="/javascripts/jquery-2.2.3.min.js" type="text/javascript"></script>
+	<script rype="text/javascript" src="/javascripts/common.js"></script>
+	<script type="text/javascript" src="/js/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="/css/min.css">
+	<script type="text/javascript" src="/js/min.js"></script>
+	<script type="text/javascript" src="/content/settings/main.js"></script>
+	<link rel="stylesheet" href="/content/settings/style.css">
+</head>
+<body>
+<!--HEAD-->
+<div id="head">
+	<div class="left">
+		Hi, <a href="center.html"><span><%= user? user.account:'admin'%></span></a> | <a href="/console/logout">退出</a>
+	</div>
+</div>
+<!--SIDEBAR -->
+<div id="sidebar">
+	<ul>
+		<li class="nosubmenu"><a href="/console"> <img src="/img/icons/menu/inbox.png" alt=""> 控制台
+		</a></li>
+		<li class="current"><a href="#"><img src="/img/icons/menu/layout.png" alt=""> 微网站管理</a>
+			<ul>
+				<li class="current"><a href="/console/inform">签证进度</a></li>
+				<li><a href="/console">主页管理</a></li>
+				<li><a href="/console">航班查询</a></li>
+				<li><a href="/console">天气查询</a></li>
+				<li><a href="/console">汇率转换</a></li>
+
+			</ul></li>
+		<li><a href="#"><img src="/img/icons/menu/users.png" alt="">微会员管理</a>
+			<ul style="display: none;">
+				<li><a href="/console/complain">投诉管理</a></li>
+				<li><a href="/console/message">留言管理</a></li>
+			</ul></li>
+			<li class="current"><a href="#"><img src="/img/icons/menu/idea.png" alt=""> 后台管理</a>
+			<ul>
+				<li><a href="/console/userSet">用户设置</a></li>
+				<li><a href="/console/visaSet">签证设置</a></li>
+			</ul></li>
+	</ul>
+</div>
+<!--CONTENT-->
+<div id="content" class="white">
+	<h1>
+		<img src="/img/page.png" alt=""> 签证进度
+	</h1>
+	<div>
+		<div class="cb"></div>
+		<div class="bloc">
+			<div class="title">添加<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb">
+					<div class="insert">
+						<div class="name" style="display:inline-block;">
+							<p>姓名：</p>
+							<input type="text" id="name_insert">
+						</div>
+						<div class="sex" style="display:inline-block;">
+							<p>性别：</p>
+							<select id="sex"></select>
+						</div>
+						<div class="id_number" style="display:inline-block;">
+							<p>身份证号码：</p>
+							<input type="text" id="id_number">
+						</div>
+						<div class="tel" style="display:inline-block;">
+							<p>手机号码：</p>
+							<input type="text" id="tel">
+						</div>
+						<div class="country" style="display:inline-block;">
+							<p>国家：</p>
+							<select id="country_name"></select>
+						</div>
+						<div class="operate" style="display:inline-block;">
+							<p>操作：</p>
+							<input type="button" id="operate" value="添加">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<div class="cb"></div>
+		<div class="bloc">
+			<div class="title">筛选<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="check">
+					<select id="visa"></select>
+					<input type="text" placeholder="请输入身份证号码" id="id_number_2">
+					<input type="button" value="查询" id="check_button">
+				</div>
+				<div class="cb"></div>
+			</div>
+		</div>
+		<div class="cb"></div>
+	</div>
+		<div class="bloc">
+			<div class="title">进度一览<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb" id="search">
+					<table class="table">
+						<tbody class="tbody">
+						<tr>
+							<th>序号</th>
+							<th>姓名</th>
+							<th>性别</th>
+							<th>手机号码</th>
+							<th>身份证号码</th>
+							<th>申签国家</th>
+							<th>开始日期</th>
+							<th>进度级别</th>
+							<th>更新时间</th>
+							<th>更新者</th>
+							<th>操作</th>
+						</tr>
+						</tbody>
+					</table>
+					<div class="update_div">
+						<button id="update_btn">更新</button>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+
+<script>
+	
+/*
+ * @Author: milkpure
+ * @Date:   2016-09-10 15:33:24
+ * @Last Modified by:   milkpure
+ * @Last Modified time: 2016-09-18 10:41:31
+ */
+
+'use strict';
+$(function() {
+
+
+	//在添加信息的性别栏中添加性别的选项内容
+	$("<option>").appendTo("#sex").html("性别");
+	$("<option>").appendTo("#sex").html("男");
+	$("<option>").appendTo("#sex").html("女");
+	//根据event中用户信息和国家信息在custom和process选取对应的信息填入表格中
+	var arr_select = [];
+
+	//根据customId查找当前的custom信息
+	function findCusInfor(customId, customs){
+		for(var j = 0;j<customs.length;j++){
+			if(customId == customs[j].id){
+				return customs[j];
+			}
+		}
+		return [];
+	}
+
+	function infor(i, event, custom, pro) {
+		$.each(event, function(index_1, value_1) {
+			var tr = $("<tr>").appendTo(".table").addClass("all_inform");
+			$("<td>").appendTo(tr).html(i++).attr({eventId:value_1.id});
+			var curCustom = findCusInfor(value_1.customId, custom);
+			$("<td>").appendTo(tr).html(curCustom.name);
+			$("<td>").appendTo(tr).html(curCustom.sex);
+			$("<td>").appendTo(tr).html(curCustom.tel);
+			$("<td>").appendTo(tr).html(curCustom.id_number);
+			$("<td>").appendTo(tr).html(value_1.country);
+			$("<td>").appendTo(tr).html(value_1.date);
+
+			var td = $("<td>").appendTo(tr);
+			var select = $("<select>").appendTo(td).attr({
+				id: "select" + index_1
+			});
+			//根据国家名在process中找取对应的国家的流程，填入选择框中
+			$.each(pro, function(index_3, value_3) {
+				if (value_1.country == value_3.country) {
+					$("<option>").appendTo(select).val(pro[index_3].order).html(pro[index_3].process);
+				}
+			});
+			arr_select[index_1] = value_1.ord;
+			select.val(value_1.ord);
+			$("<td>").appendTo(tr).html(value_1.update_time);
+			$("<td>").appendTo(tr).html(value_1.admin_name);
+			$("<td>").appendTo(tr).html("删除").addClass("delete").attr('eventId',value_1.id);
+		});
+		console.log(arr_select);
+	}
+
+	var cus_infor; //用来存取custom表中的信息
+	var pro_infor; //用来存取process表中的信息
+	var event_infor; //用来存取event表中的信息
+	//利用ajax向inform/event中读取event、process、cusstom三表的信息
+	$.ajax({
+		type: "get",
+		dataType: "json",
+		url: "/inform/event",
+		async: "true",
+		success: function(data) {
+			var i = 1;
+			cus_infor = data.custom;
+			pro_infor = data.process;
+			event_infor = data.event;
+			
+			infor(i, data.event, data.custom, data.process);
+
+			var obj_country = country_number(pro_infor);
+			$("<option>").appendTo("#visa").html("请选择签证国家");
+			$("<option>").appendTo("#country_name").html("请选择签证国家");
+			$.each(obj_country, function(index, value) {
+				$("<option>").appendTo("#visa").html(value.country);
+				$("<option>").appendTo("#country_name").html(value.country);
+			});
+
+
+			$(".delete").click(function() {
+				if(confirm("确认要删除此项记录吗？")){
+					var index = Array.prototype.indexOf.call($(".delete"), this);
+					var ele = $(this);
+					$.ajax({
+						data: {
+							id: ele.attr('eventid')
+						},
+						dataType: "json",
+						type: "post",
+						url: "/event/delete",
+						success: function(data) {
+							setTimeout(function() {
+								window.location.reload();
+							}, 1000);
+						},
+						error: function(err) {
+							console.log("error");
+						}
+					});
+				}
+				visa_coun(pro_infor);
+			})
+				
+		},
+		error: function() {
+			console.log("error");
+		}
+	});
+
+	//从process中获取签证国家
+	function country_number(pro_infor) {
+		var obj_country = [];
+		obj_country[0] = pro_infor[0];
+		var flag = 1;
+		var k = 1;
+		//这个for循环用来去除重复国家
+		for (var i = 1; i < pro_infor.length; i++) {
+			for (var j = 0; j < obj_country.length; j++) {
+				if (pro_infor[i].country == obj_country[j].country) {
+					flag = 0;
+					break;
+				}
+			};
+			if (flag == 1) {
+				obj_country[k] = pro_infor[i];
+				k++;
+			};
+			flag = 1;
+		};
+		console.log(obj_country);
+		return obj_country;
+	};
+
+	//根据所填的信息筛选用户信息
+	$("#check_button").click(function() {
+		//建立筛选后信息表
+		var table = $("<table>").appendTo("#search").addClass("table");
+		var tr1 = $("<tr>").appendTo(table);
+		$("<th>").appendTo(tr1).html("序号");
+		$("<th>").appendTo(tr1).html("姓名");
+		$("<th>").appendTo(tr1).html("性别");
+		$("<th>").appendTo(tr1).html("手机号码");
+		$("<th>").appendTo(tr1).html("身份证号码");
+		$("<th>").appendTo(tr1).html("申签国家");
+		$("<th>").appendTo(tr1).html("开始日期");
+		$("<th>").appendTo(tr1).html("进度级别");
+		$("<th>").appendTo(tr1).html("更新时间");
+		$("<th>").appendTo(tr1).html("更新者");
+		var country = $("#visa option:checked").html(); //筛选的国家
+		var id_number = $("#id_number_2").val(); //筛选的身份证号码
+		var i = 1;
+		//根据所填筛选信息的不同进行不同的筛选
+		if (country == "请选择签证国家" && id_number.length == 0) { //没填筛选信息的情况
+			infor(i, event_infor, cus_infor, pro_infor);
+		} else {
+			if (country == "请选择签证国家" && id_number.length != 0) { //填了身份证号码没填国家时的情况
+				var arr_event = [];
+				var j = 0;
+				$.each(cus_infor, function(index, value) {
+					if (id_number == value.id_number) {
+						var customId=value.id;
+						$.each(event_infor,function(indexs,values){
+							if(customId==values.customId){
+								arr_event[j]=event_infor[indexs];
+								j++;
+							}
+						})
+					}
+				});
+				infor(i, arr_event, cus_infor, pro_infor);
+			} else {
+				if (country != "请选择签证国家" && id_number.length == 0) { //填了国家信息没填身份证号码的情况
+					var arr_events = [];
+					var j = 0;
+					$.each(event_infor, function(index, value) {
+						if (country == value.country) {
+							arr_events[j] = event_infor[index];
+							j++
+						}
+					});
+					infor(i, arr_events, cus_infor, pro_infor);
+				} else {
+					if (country != "请选择签证国家" && id_number.length != 0) { //筛选信息都填了的情况
+						var arr_Event = [];
+						var j = 0;
+						$.each(cus_infor, function(index, value) {
+							if (value.id_number == id_number) {
+								var customId=value.id;
+								$.each(event_infor,function(indexs,values){
+									if(customId==values.customId&&country==values.country){
+										arr_Event[j++]=event_infor[indexs];
+									};
+								});
+							}
+						});
+						infor(i, arr_Event, cus_infor, pro_infor);
+					}
+				}
+			}
+		}
+		table.siblings(".table").hide();
+		$("#update_btn").hide();
+	});
+	//获取当天时间
+	function getTime() {
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1 > 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1);
+		var day = date.getDate() > 10 ? date.getDate() : "0" + date.getDate();
+		var hour = date.getHours() > 10 ? date.getHours() : "0" + date.getHours();
+		var min = date.getMinutes() > 10 ? date.getMinutes() : "0" + date.getMinutes();
+		var sec = date.getSeconds() > 10 ? date.getSeconds() : "0" + date.getSeconds();
+		return (year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec);
+	}
+	//添加客户信息
+	$("#operate").click(function() {
+		var time = getTime();
+		console.log(time);
+		if(!$("#name_insert").val()){
+			alert("姓名不能为空！");
+		}else if($("#sex option:checked").html()=="性别"){
+			alert("请选择性别!");
+		}else if(!$("#id_number").val()){
+			alert("身份证号码不能为空！");
+		}else if(!$("#tel").val()){
+			alert("手机号码不能为空！");
+		}else if($("#country_name option:checked").html()=="请选择签证国家"){
+			alert("请选择签证国家！");
+		}else {
+			var flag=0;
+			$.each(cus_infor,function(index,value){
+				if(value.id_number==$("#id_number").val()){
+					var customId=value.id;
+					$.each(event_infor,function(indexs,values){
+						if(customId==values.customId){
+							if($("#country_name option:checked").html()==values.country){
+								alert("该国家您已申请");
+								flag=1;
+							}
+						}
+					});
+				}
+
+			});
+			if(flag==0){
+				$.ajax({
+				data: {
+					name: $("#name_insert").val(),
+					sex: $("#sex option:checked").html(),
+					id_number: $("#id_number").val(),
+					tel: $("#tel").val(),
+					},
+				dataType: "json",
+				type: "post",
+				url: "/inform/insert/custom",
+				success: function(data) {
+					console.log("add custom success");
+					console.log(data);
+					insertEvent(data);
+					},
+				error: function(err) {
+					console.log("add custom error:", err);
+					}
+				});
+			}
+		}
+		function insertEvent(custom){
+			console.log(custom);
+			$.ajax({
+			data: {
+				customId: custom.id,
+				country: $("#country_name option:checked").html(),
+				date: time,
+				ord: "0",
+				update_time: time,
+				admin_name: "admin"
+			},
+			dataType: "json",
+			type: "post",
+			url: "/inform/insert/event",
+			success: function(data) {
+				console.log("add event success");
+				setTimeout(function() {
+					window.location.reload();
+				}, 1000);
+			},
+			error: function() {
+				console.log("add event error");
+			}
+		})
+		}
+		
+	});
+	//更新按钮
+	$("#update_btn").click(function() {
+		var event_obj = {};
+		var date = getTime();
+		console.log(date);
+		var sort = [];
+		var j = 0;
+		var all_inform_eles = $('.all_inform');
+		for (var i = 0; i < all_inform_eles.length; i++) {
+			if (arr_select[i] != $("#select" + i).find("option:selected").val()) {
+				
+				var eventId = $(all_inform_eles[i]).children(":first").attr("eventid");
+				// console.log(eventId);
+				event_obj[eventId] = $("#select" + i).find("option:selected").val();
+			}
+		};
+		for (var eventId in event_obj) {
+			$.ajax({
+				url: "/inform/update",
+				data: {
+					eventId: eventId,
+					ord: event_obj[eventId],
+					update_time: date
+				},
+				dataType: "json",
+				type: "post",
+				success: function() {
+					console.log("success");
+				},
+				error: function() {
+					console.log("error");
+				}
+			});
+		}
+	});
+	//显示签证国家信息
+	function visa_coun(pro_infor){		
+		var n=1;
+		var obj_coun=country_number(pro_infor);
+		$.each(obj_coun,function(index,value){
+			var tr=$("<tr>").appendTo(".visa_coun");
+			$("<td>").appendTo(tr).html(n++);
+			$("<td>").appendTo(tr).html(value.country).attr({
+				id:"coun"+index
+			});
+			$("<td>").appendTo(tr).html(value.add_time);
+			$("<td>").appendTo(tr).html("删除").addClass("delete_coun");
+		});
+	};
+	//添加签证国家
+	$("#btn_coun").click(function(){
+		var add_time=getTime();
+		$.ajax({
+			data:{
+				country:$("#coun_name").val(),
+				add_time:add_time
+			},
+			dataType:"json",
+			type:"post",
+			url:"/inform/insert_coun",
+			success:function(){
+				console.log("success");
+			},
+			error:function(){
+				console.log("error")
+			}
+		})
+	});
+});
+
+</script>
+</body>
+</html>

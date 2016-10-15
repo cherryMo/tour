@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<title>个人中心-大连海之韵国际旅行社</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- jQuery AND jQueryUI -->
+	<script type="text/javascript" src="/js/libs/jquery/1.6/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="/css/min.css">
+	<script type="text/javascript" src="/js/min.js"></script>
+	<script type="text/javascript" src="/content/settings/main.js"></script>
+	<link rel="stylesheet" href="/content/settings/style.css">
+
+</head>
+<body><!-- 
+<form onsubmit="return checkValue()" id="id8" method="post" action="./?3-1.IFormSubmitListener-form"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id8_hf_0" id="id8_hf_0"></div> -->
+	<!-- HEAD -->
+	<div id="head">
+		<div class="left">
+			Hi, <a href="center.html"><span><%= user?user.account:'admin'%></span></a> | <a href="/console/logout">退出</a>
+		</div>
+	</div>
+	<!--SIDEBAR-->
+	<div id="sidebar">
+		<ul>
+			<li class="nosubmenu"><a href="/console"> <img src="/img/icons/menu/inbox.png" alt=""> 控制台</a></li>
+			<li class=""><a href="#"><img src="/img/icons/menu/layout.png" alt="">微网站管理</a>
+				<ul style="display: none;">
+					<li><a href="/console/inform">签证进度</a></li>
+					<li><a href="/console">主页管理</a></li>
+					<li><a href="/console">航班查询</a></li>
+					<li><a href="/console">天气查询</a></li>
+					<li><a href="/console">汇率转换</a></li>
+				</ul>
+			</li>
+			<li class=""><a href="#"><img src="/img/icons/menu/users.png" alt="">微会员管理</a>
+				<ul style="display: none;">
+					<li><a href="/console/complain">投诉管理</a></li>
+					<li><a href="/console/message">留言管理</a></li>
+				</ul>
+			</li>
+			<li class="current"><a href="#"><img src="/img/icons/menu/idea.png" alt=""> 后台管理</a>
+			<ul>
+				<li><a href="/console/userSet">用户设置</a></li>
+				<li><a href="/console/visaSet">签证设置</a></li>
+			</ul></li>
+		</ul>
+	</div>
+	<!--CONTENT-->
+	<div id="content" class="white">
+
+		<div class="" style="display: none;">
+			<strong><span></span></strong>
+			<span></span>
+			<a href="#" class="close"></a>
+		</div>
+
+		<h1><img src="/img/icons/smiley-happy.png" alt=""> 个人中心</h1>
+
+		<div class="bloc left">
+			<div class="title">修改密码<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb">
+					<form action="/console/secure" method="post">
+						<table>
+						<tbody>
+							<tr>
+								<td></td>
+								<td>
+									<div id="msg"></div>
+								</td>
+							</tr>
+						<tr>
+							<td>原密码</td>
+							<td>
+								<div class="input">
+									<input type="text" autocomplete="off" id="oldPwd" placeholder="请输入原密码" value="" name="oldPwd">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td rowspan="2">新密码</td>
+							<td>
+								<div class="input">
+									<input type="password" id="firstNewPwd" placeholder="请输入新密码" value="" name="firstNewPwd">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="input">
+									<input type="password" id="secordNewPwd" placeholder="请确认新密码" value="" name="secordNewPwd">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: center;">
+								<div class="submit">
+									<input type="button" value="修改" name="btnUpd" id="change-psw">
+									<input type="reset" value="取消">
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+
+					</form>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- </form> -->
+
+<script>
+	
+	$(document).ready(function(){
+
+		$('#change-psw').click(function(){
+			var oldPwd = $('#oldPwd').val();
+			var firstNewPwd = $('#firstNewPwd').val();
+			var secordNewPwd = $('#secordNewPwd').val();
+			var msg = $('#msg');
+			if(!oldPwd || !firstNewPwd || !secordNewPwd){
+				alert('请输入原密码新密码！');
+				return false;
+			}
+			if(firstNewPwd != secordNewPwd){
+				alert('两次密码不一致！');
+				return false;
+			}
+			if(confirm('确定修改密码？')){
+				$.ajax({
+					type:'post',
+					dataType:'json',
+					data:{oldPwd:oldPwd, firstNewPwd:firstNewPwd,secordNewPwd:secordNewPwd},
+					url:'/console/secure',
+					success:function(data){
+						msg.html('修改成功！');
+					},
+					error: function(err){
+						msg.html(JSON.parse(err.responseText).error);
+					}
+				})
+			}
+
+		});
+	});
+
+
+</script>
+
+</body>
+</html>

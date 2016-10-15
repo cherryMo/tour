@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: MicroSoft Yahei;
+			font-size: 14px;
+		}
+		ul {
+			list-style: none;
+		}
+		body {
+			min-width: 900px;
+		}
+		.top {
+			height:58px;
+			width: 100%;
+		}
+		.logo {
+			height:58px;
+			width:111px;
+			display:inline-block;
+			background:url('/images/icon/logo.png') no-repeat;
+		}
+		header ul {
+			float:right;
+			padding-right: 20px;
+		}
+		header ul li {
+			height:58px;
+			line-height: 58px;
+			display:inline-block;
+			margin: 0 16px;
+			text-align: center;
+			list-style: none;
+		}
+		header li a {
+			text-decoration: none;
+			color: #000;
+			font-size: 16px;
+		}
+		.container{
+			width:100%;
+			height:100%;
+			position:relative;
+			/*top:58px;*/
+			/*bottom:60px;*/
+		}
+		.back{
+			width:100%;
+			height:100%;
+			/*background:url('/images/img/index_back.jpg');*/
+			position:absolute;
+			z-index: -1;
+		}
+		.back img {
+			width:100%;
+			height:100%;
+			position:fixed;
+			min-width: 900px;
+		}
+		.footer {
+			position:absolute;
+			bottom: 0;
+			text-align: center;
+			height:60px;
+			line-height: 60px;
+			width:100%;
+			background:#868789;
+		}
+		.go{
+			width: 100%;
+		}
+		.s1{
+			position: absolute;
+			left: 50px;
+			top: 100px;
+			color: #fff;
+			letter-spacing: 10px;
+			font-size: 400%;
+			font-family: "楷体";
+		}
+		.s2{
+			position: absolute;
+			left: 50px;
+			top: 215px;
+			color: rgb(253,205,61);
+			font-size: 400%;
+			font-weight: 900;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="top">
+			<div class="logo"></div>
+			<ul>
+				<li><a href="/client/login">登录|LOGIN</a></li>
+				<li><a href="/client/register">注册|REGISTER</a></li>
+			</ul>
+		</div>
+	</header>
+	<div class="container">
+		<div class="back">
+			<img src="/images/img/index_back.jpg" alt="">
+		</div>
+		<div class="go">
+			<span class="s1">想去哪儿，<br/>&nbsp;&nbsp;&nbsp;就去哪儿。</span>
+			<span class="s2"><br/>Just go wherever<br/>&nbsp;&nbsp;&nbsp;&nbsp;you want to go</span>
+		</div>
+	</div>
+	<%- include footer %>
+</body>
+</html>

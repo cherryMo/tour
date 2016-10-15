@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<title>投诉管理-大连海之韵国际旅行社</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- jQuery AND jQueryUI -->
+	<script type="text/javascript" src="/js/libs/jquery/1.6/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="/css/min.css">
+	<script type="text/javascript" src="/js/min.js"></script>
+	<link rel="stylesheet" href="/content/settings/style.css">
+	<script type="text/javascript">
+		/*<![CDATA[*/
+
+		function checkValue() {
+			if(confirm("是否确认删除")){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		/*]]>*/
+	</script>
+</head>
+<body>
+<form onsubmit="return checkValue();" id="id4" method="post" action="./?1-1.IFormSubmitListener-form"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id4_hf_0" id="id4_hf_0"></div>
+	<!--HEAD-->
+	<div id="head">
+		<div class="left">
+			Hi, <a href="center.html"><span>admin</span></a> | <a href="/console/logout">退出</a>
+		</div>
+	</div>
+	<!--SIDEBAR-->
+	<div id="sidebar">
+		<ul>
+			<li class="nosubmenu"><a href="/console"> <img src="/img/icons/menu/inbox.png" alt=""> 控制台</a></li>
+			<li><a href="#"><img src="/img/icons/menu/layout.png" alt="">微网站管理</a>
+				<ul style="display: none;">
+					<li><a href="/console/inform">签证进度</a></li>
+					<li><a href="/console">主页管理</a></li>
+					<li><a href="/console">航班查询</a></li>
+					<li><a href="/console">天气查询</a></li>
+					<li><a href="/console">汇率转换</a></li>
+				</ul>
+			</li>
+			<li class="current"><a href="#"><img src="/img/icons/menu/users.png" alt=""> 微会员管理</a>
+				<ul>
+					<li class="current"><a href="/console/complain">投诉管理</a></li>
+					<li><a href="/console/message">留言管理</a></li>
+				</ul>
+			</li>
+			<li class="current"><a href="#"><img src="/img/icons/menu/idea.png" alt=""> 后台管理</a>
+			<ul>
+				<li><a href="/console/userSet">用户设置</a></li>
+				<li><a href="/console/visaSet">签证设置</a></li>
+			</ul></li>
+		</ul>
+	</div>
+	<!--CONTENT-->
+	<div id="content" class="white">
+		<h1><img src="/img/icons/posts.png" alt=""> 投诉管理</h1>
+		<div class="bloc left">
+			<div class="title">批量处理<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb">
+					<div class="submit">
+						<input type="button" value="删除投诉" name="subDelCom" id="subDelCom">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="cb"></div>
+		<div class="bloc">
+			<div class="title">投诉管理<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb">
+
+					<table>
+						<thead>
+						<tr>
+							<th></th>
+							<th><span>会员</span></th>
+							<th><span>被投诉人</span></th>
+							<th><span>投诉原因</span></th>
+							<th><span>详细说明</span></th>
+							<th><span>投诉时间</span></th>
+						</tr>
+						</thead>
+						<tbody>
+						<% data.forEach(function(o, i){ %>
+							<tr>
+							<td><input  class="all_complain" type="checkbox" id="<%= o.id %>" name="group" value="check0"></td>
+							<td><span><%= o.name %></span></td>
+							<td><span><%= o.complaint %></span></td>
+							<td><span><%= o.reason %></span></td>
+							<td><span><%= o.detail %></span></td>
+							<td><span><%= o.time %></span></td>
+							</tr>
+						<% }) %>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<script>
+	//删除处理
+	$("#subDelCom").click(function() {
+		var delArr = [];
+		var all_complain_eles = $('.all_complain');
+		for (var i = 0; i < all_complain_eles.length; i++) {
+			var $ele = $(all_complain_eles[i]);
+			if ($ele.attr("checked") === "checked") {
+				delArr.push($ele.attr('id'));	
+			}
+		};
+		delArr.forEach(function(value, index){
+			console.log(value);
+			$.ajax({
+				url: "/complain/delete",
+				data: {id: value},
+				dataType: "json",
+				type: "post",
+				success: function() {
+					console.log("success");
+					window.location.reload();
+				},
+				error: function(err) {
+					console.log(err);
+				}
+			});
+		});
+
+	});
+</script>
+</body></html>

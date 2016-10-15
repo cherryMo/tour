@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+	<link rel="stylesheet" href="/css/client.css">
+	<script src="/javascripts/jquery-2.2.3.min.js" type="text/javascript"></script>
+	<script rype="text/javascript" src="/javascripts/common.js"></script>
+	<style>
+		.container{
+			width: 600px;
+			height: 400px;
+			background-color: rgba(255,255,255,0.9);
+			position: absolute;
+			left:50%;
+			top:50%;
+			margin:-200px 0 0 -300px;
+		}
+		.ra_out{
+			width: 150px;
+			height: 150px;
+			background-color: rgb(253,205,61);
+			position: relative;
+			left: 225px;
+			top: -75px;
+			border-radius: 50%;
+		}
+		.ra_up{
+			width: 50px;
+			height: 50px;
+			background-color: #fff;
+			position: relative;
+			top: 20px;
+			left: 50px;
+			border-radius: 50%;
+		}
+		.ra_down{
+			width: 100px;
+			height: 60px;
+			background-color: #fff;
+			position: relative;
+			top: 20px;
+			left: 25px;
+			border-radius: 60%;
+		}
+		.di{
+			width: 500px;
+			height: 50px;
+			border-radius: 50px;
+			position: relative;
+		}
+		.d1{
+			background-color: #fff;
+			top: -50px;
+			left: 50px;
+			
+		}
+		.di img{
+			position: relative;
+			top: 7px;
+			left: 50px;
+			width: 16px;
+			height: 23px;
+		}
+		.di input{
+			position: relative;
+			top: 3px;
+			left: 60px;
+			width: 400px;
+			height: 45px;
+			font-size: 159%;
+			border: 0px;
+		}
+		.d2{
+			background-color: #fff;
+			top: 10px;
+			left: 50px;
+		}
+		.bot{
+			background-color: rgb(253,205,61);
+			top: 70px;
+			left: 50px;
+		}
+	  	.bot input{
+			color: #fff;
+			font-size: 180%;
+			position: relative;
+			top: 3px;
+			left: 48px;
+			background-color: rgb(253,205,61);
+		}
+
+	</style>
+</head>
+<body class="back">
+	<!-- <h3>客户端登录</h3> -->
+	<form method="post" action="/client/login">
+
+		<div class="container">
+			<div class="ra_out">
+				<div class="ra_up"></div><div class="ra_down"></div>
+			</div>
+			<div class="di d1">
+				<img src="/images/icon/icon_account.png"/> 
+				<input type="text" name="account" id="account" placeholder="账户|USERNAME"/>
+			</div>
+			<div class="di d2">
+				<img src="/images/icon/icon_psw.png"/>
+				<input type="password" name="password" id="password" placeholder="密码|PASSWORD"/>
+			</div>
+			<div class="di bot">
+				<input type="button" value="登录|Login" id="customLogin" />
+				<!-- <span>登录|Login</span> -->
+			</div>
+		</div>
+
+
+		<!-- <table>
+			<tbody>
+				<tr>
+					<div id="msg"></div>
+					<td>账号：</td>
+					<td><input type="text" name="account" id="account"></td>
+				</tr>
+				<tr>
+					<td>密码：</td>
+					<td><input type="password" name="password" id="password"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="button" value="登录" id="customLogin"></td>
+				</tr>
+			</tbody>
+		</table> -->
+	</form>
+
+
+	<script>
+
+	$(document).ready(function(){
+
+		$('#customLogin').click(function(){
+			var account = $('#account').val();
+			var password = $('#password').val();
+			if(!account || !password){
+				return alert('请输入正确的用户名或密码！');
+			}
+	
+			$.ajax({
+				dataType:'json',
+				type:'post',
+				url:'/client/login',
+				data:{account:account, password:password},
+				success:function(data){
+					console.log('login success');
+					location.href="/client/center";
+				},
+				error:function(err){
+					console.log(err);
+					alert(JSON.parse(err.responseText).error);
+				}
+			})
+		});
+		
+	})
+
+	</script>
+
+</body>
+</html>

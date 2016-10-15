@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<title>签证设置-大连海之韵国际旅行社</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<!-- jQuery AND jQueryUI -->
+	<script src="/javascripts/jquery-2.2.3.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/js/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="/css/min.css">
+	<script type="text/javascript" src="/js/min.js"></script>
+	<script type="text/javascript" src="/content/settings/main.js"></script>
+	<link rel="stylesheet" href="/content/settings/style.css">
+	<script>
+		/*<![CDATA[*/
+
+		function CouponFlow() {
+
+			if (flow.value == "" || null == flow.value) {
+				alert("请输入签证流程");
+				return false;
+			}
+			if (desc.value == "" || null == desc.value) {
+				alert("请输入签证描述");
+				return false;
+			}
+		}
+
+		/*]]>*/
+	</script>
+	<script>
+		/*<![CDATA[*/
+
+		function Coupontype() {
+			if (addcoupon.value == "" || null == addcoupon.value) {
+				alert("请输入签证种类");
+				return false;
+			}
+		}
+
+		/*]]>*/
+	</script>
+	<style>
+		/*<![CDATA[*/
+		.neutral:hover {
+			cursor: pointer;
+		}
+		.aaa {
+			display: none;
+		}
+
+		/*]]>*/
+	</style>
+</head>/
+<body>
+<!-- HEAD -->
+<div id="head">
+	<div class="left">
+		Hi, <a href="center.html"><span><%= user?user.account:'admin'%></span></a> | <a href="/console/logout">退出</a>
+	</div>
+</div>
+<!--SIDEBAR-->
+<div id="sidebar">
+	<ul>
+		<li class="nosubmenu"><a href="/console"> <img src="/img/icons/menu/inbox.png" alt=""> 控制台
+		</a></li>
+		<li><a href="#"><img src="/img/icons/menu/layout.png" alt="">
+			微网站管理</a>
+			<ul style="display: none;">
+				<li><a href="/console/inform">签证进度</a></li>
+				<li><a href="/console">主页管理</a></li>
+				<li><a href="/console">航班查询</a></li>
+				<li><a href="/console">天气查询</a></li>
+				<li><a href="/console">汇率转换</a></li>
+			</ul></li>
+		<li><a href="#"><img src="/img/icons/menu/users.png" alt="">
+			微会员管理</a>
+			<ul style="display: none;">
+				<li><a href="/console/complain">投诉管理</a></li>
+				<li><a href="/console/message">留言管理</a></li>
+			</ul></li>
+		<li class="current"><a href="#"><img src="/img/icons/menu/idea.png" alt=""> 后台管理</a>
+			<ul>
+				<li><a href="/console/userSet">用户设置</a></li>
+				<li class="current"><a href="/console/visaSet">签证设置</a></li>
+			</ul></li>
+	</ul>
+</div>
+
+<!--CONTENT-->
+<div id="content" class="white">
+	<h1>
+		<img src="/img/icons/cog.png" alt=""> 签证设置
+	</h1>
+	<div class="cb"></div>
+	<div class="bloc">
+		<div class="title">签证种类<a href="#" class="toggle"></a></div>
+		<div class="content">
+			<div class="cb">
+				<table class="noalt">
+					<thead>
+					<tr>
+						<th><em>序号</em></th>
+						<th><em>签证种类</em></th>
+						<th><em>添加时间</em></th>
+						<th><em>操作</em></th>
+					</tr>
+					</thead>
+					<tbody>
+						<% country.forEach(function(o,i){ %>
+						<tr>
+							<td><%= i %></td>
+							<td class="neutral show_process"><%= o.country %></td>
+							<td class="good"><%= o.time.toLocaleString() %></td>
+							<td class="del_country" countryid="<%= o.id %>"><img style="cursor:pointer" src="/img/icons/actions/delete.png" alt=""></td>
+						</tr>
+						<% }) %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="bloc left">
+		<div class="title">添加签证种类<a href="#" class="toggle"></a></div>
+		<div class="content">
+			<div class="cb">
+				<table class="noalt">
+					<thead>
+					<tr>
+						<th><em>内容</em></th>
+						<th><em>操作</em></th>
+					</tr>
+					</thead>
+
+					<tbody>
+					<tr>
+						<td>
+							<div class="input">
+								<input type="text" autocomplete="off" placeholder="请输入国家名称" id="country" value="" name="country">
+							</div>
+						</td>
+						<td><div class="submit">
+							<input type="button" value="添加" name="btn_add_country" id="btn_add_country">
+						</div></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<form>
+		<div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"></div>
+		<div class="bloc right">
+			<div class="title">添加签证流程<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb">
+					<table class="noalt">
+						<thead>
+						<tr>
+							<th><em>国家</em></th>
+							<th><em>次序</em></th>
+							<th><em>流程</em></th>
+							<th><em>描述</em></th>
+							<th><em>操作</em></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td class="neutral">
+								<select name="process_country" id="process_country" style="height:28px;margin-top:-5px">
+									<% country.forEach(function(o,i){ %>
+										<option value="<%= i %>"><%= o.country %></option>
+									<% }) %>
+								</select>
+							</td>
+							<td><div class="input">
+								<input style="width: 30px;" type="text" autocomplete="off" placeholder="次序" id="order" value="" name="order">
+							</div></td>
+							<td><div class="input">
+								<input style="width: 100px;" type="text" autocomplete="off" placeholder="请输入签证流程" id="process" value="" name="process">
+							</div></td>
+							<td><div class="input">
+								<input style="width: 200px;" type="text" autocomplete="off" placeholder="请输入流程描述" id="descript" value="" name="descript">
+							</div></td>
+							<td><div class="submit">
+								<input type="button" value="添加" name="add_process" id="btn_add_process">
+							</div></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</form>
+	<form>
+		<div class="cb"></div>
+		<div class="bloc">
+			<div class="title">
+				<span id="certain_country"></span>签证流程
+				<a href="#" class="toggle"></a>
+			</div>
+			<div class="content">
+				<table class="noalt">
+					<thead>
+					<tr>
+						<th><em>序号</em></th>
+						<th><em>流程</em></th>
+						<th><em>描述</em></th>
+						<th><em>添加时间</em></th>
+						<th><em>操作</em></th>
+					</tr>
+					</thead>
+					<tbody id="process_detail">
+					
+					</tbody>
+				</table>
+				<div class="cb"></div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+	$(document).ready(function(){
+		//添加国家
+		$('#btn_add_country').click(function(){
+			var country = $('#country').val();
+			if(!country){
+				alert('请输入国家名称！');
+			}
+			$.ajax({
+				url: '/country/insert',
+				type:'post',
+				dataType:'json',
+				data:{country:country},
+				success: function(data){
+					console.log('add country success');
+					window.location.reload();
+				},
+				error: function(err){
+					console.log(err);
+					console.log('add country error');
+					alert('添加错误，请重试');
+				}
+			})
+		})
+
+		//删除国家
+		$('.del_country').click(function(){
+			var countryId = $(this).attr('countryid');
+			if(confirm('确定删除？')){
+				$.ajax({
+					url: '/country/delete',
+					type:'post',
+					dataType:'json',
+					data:{id:countryId},
+					success: function(data){
+						console.log('add country success');
+						window.location.reload();
+					},
+					error: function(err){
+						console.log(err);
+						console.log('add country error');
+						alert('错误，请重试');
+					}
+				})
+			}
+		})
+
+		//添加特定国家签证流程
+		$('#btn_add_process').click(function(){
+			var country = $('#process_country option:checked').text();
+			var order = $('#order').val();
+			var process = $('#process').val();
+			var descript = $('#descript').val();
+			if(!country || !order || !process || !descript){
+				alert('请输入完整的流程信息');
+			}
+			console.log('start ajax');
+			$.ajax({
+				url: '/process/insert',
+				type:'post',
+				dataType:'json',
+				data:{country:country,order:order,process:process,descript:descript},
+				success: function(data){
+					console.log(data);
+					console.log('add process success');
+					alert('添加成功！');
+					// window.location.reload();
+				},
+				error: function(err){
+					console.log(err);
+					console.log('add process error');
+					alert('错误，请重试');
+				}
+			})
+		})
+
+		function showProcess(data, country){
+			$('#certain_country').text(country);
+			var html = '';
+			for(var i=0; i<data.length;i++){
+			html += '<tr><td>'+data[i].order+'</td><td class="neutral">'+data[i].process+'</td><td class="neutral">'+data[i].descript+'</td><td class="good">'+data[i].add_time.toLocaleString()+'</td><td  processid='+ data[i].id+' class="del_process"><img style="cursor:pointer;" src="/img/icons/actions/delete.png" alt=""></td></tr>'
+				$('#process_detail').html(html);
+			}
+
+			//删除流程事件绑定
+			$('.del_process').click(function(){
+				var processId = $(this).attr('processid');
+				console.log('processId',processId);
+				if(confirm('确定删除？')){
+					$.ajax({
+						url: '/process/delete',
+						type:'post',
+						dataType:'json',
+						data:{id:processId},
+						success: function(data){
+							alert('删除成功！');
+							console.log('add process success');
+							window.location.reload();
+						},
+						error: function(err){
+							console.log(err);
+							console.log('add process error');
+							alert('错误，请重试');
+						}
+					})
+				}
+			})
+
+
+
+
+		}
+
+		$('.show_process').click(function(){
+			var country = $(this).text();
+			$.ajax({
+				url: '/process/show',
+				type:'post',
+				dataType:'json',
+				data:{country:country},
+				success: function(data){
+					showProcess(data, country);
+				},
+				error: function(err){
+					console.log(err);
+					alert('错误，请重试');
+				}
+			})
+		})
+
+
+	});	
+</script>
+
+</body>
+</html>

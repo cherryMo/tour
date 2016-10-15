@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<title>用户设置-大连海之韵国际旅行社</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<!-- jQuery AND jQueryUI -->
+	<script type="text/javascript" src="/js/libs/jquery/1.6/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/javascripts/jquery-2.2.3.min.js" ></script>
+	<script rype="text/javascript" src="/javascripts/common.js"></script>
+	<link rel="stylesheet" href="/css/min.css">
+	<script type="text/javascript" src="/js/min.js"></script>
+	<script type="text/javascript" src="/content/settings/main.js"></script>
+	<link rel="stylesheet" href="/content/settings/style.css">
+</head>
+<body>
+	<!-- HEAD -->
+	<div id="head">
+		<div class="left">
+			Hi, <a href="center.html"><span>admin</span></a> | <a href="/console/logout">退出</a>
+		</div>
+	</div>
+	<!--SIDEBAR-->
+	<div id="sidebar">
+		<ul>
+			<li class="nosubmenu"><a href="/console"> <img src="/img/icons/menu/inbox.png" alt=""> 控制台
+			</a></li>
+			<li><a href="#"><img src="/img/icons/menu/layout.png" alt="">
+				微网站管理</a>
+				<ul style="display: none;">
+					<li><a href="/console/inform">签证进度</a></li>
+					<li><a href="/console">主页管理</a></li>
+					<li><a href="/console">航班查询</a></li>
+					<li><a href="/console">天气查询</a></li>
+					<li><a href="/console">汇率转换</a></li>
+				</ul></li>
+			<li><a href="#"><img src="/img/icons/menu/users.png" alt="">
+				微会员管理</a>
+				<ul style="display: none;">
+					<li><a href="/console/complain">投诉管理</a></li>
+					<li><a href="/console/message">留言管理</a></li>
+				</ul></li>
+			<li class="current"><a href="#"><img src="/img/icons/menu/idea.png" alt=""> 后台管理</a>
+				<ul>
+					<li class="current"><a href="/console/userSet">用户设置</a></li>
+					<li><a href="/console/visaSet">签证设置</a></li>
+				</ul></li>
+				<li class="current"><a href="#"><img src="/img/icons/menu/idea.png" alt=""> 后台管理</a>
+			<ul>
+				<li><a href="/console/userSet">用户设置</a></li>
+				<li><a href="/console/visaSet">签证设置</a></li>
+			</ul></li>
+		</ul>
+	</div>
+	<!--CONTENT-->
+	<div id="content" class="white">
+		<h1>
+			<img src="/img/icons/users.png" alt=""> 用户设置
+		</h1>
+		<div class="" style="display: none;">
+			<strong><span></span></strong> <span></span> <a href="userSet.html" class="close"></a>
+		</div>
+
+		<div class="cb"></div>
+		<div class="bloc">
+			<div class="title">添加用户<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb">
+
+					<form action="/console/addUser" method="post">
+						
+					<table class="noalt">
+						<thead>
+						<tr>
+							<th><em>用户名</em></th>
+							<th><em>密码</em></th>
+							<th><em>操作</em></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>
+								<div class="input">
+									<input type="text" autocomplete="off" placeholder="请输入用户名" id="username" value="" name="newname">
+								</div>
+							</td>
+							<td>
+								<div class="input">
+									<input type="text" autocomplete="off" placeholder="请输入密码" id="password" value="" name="newpassword"></div>
+							</td>
+							<td class="good">
+								<div class="submit">
+									<input type="button" value="添加" name="btnSubmit" id="add-user">
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+
+					</form>
+					
+				</div>
+			</div>
+		</div>
+
+		<div class="bloc">
+			<div class="title">用户列表<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<div class="cb">
+					<table class="noalt">
+						<thead>
+						<tr>
+							<th><em>序号</em></th>
+							<th><em>用户名</em></th>
+							<th><em>密码</em></th>
+							<th><em>添加时间</em></th>
+							<th><em></em></th>
+						</tr>
+						</thead>
+						<tbody>
+
+							<% data.forEach(function(o, i){ %>
+								
+							<tr>
+								<td><span><%= i+1 %></span></td>
+								<td class="good"><span><%= o.account %></span></td>
+								<td class="good"><span>***</span></td>
+								<td class="good"><span><%= o.time.toLocaleString() %></span></td>
+								<td class="good"><a title="删除该用户" onclick="cfm('/console/delUser/<%= o.id %>')"><img src="/img/icons/actions/delete.png" alt="" id="delete-user"></a>
+								</td>
+							</tr>	
+							<% }); %>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+<script>
+
+$(document).ready(function(){
+	
+	$('#add-user').click(function(){
+			var account = $('#username').val();
+			var password = $('#password').val();
+		
+			if(!account || !password){
+				alert('请输入用户名或密码！');
+				return false;
+			}
+	
+			$.ajax({
+				dataType:'json',
+				type:'post',
+				url:'/console/adduser',
+				data:{account:account, password:password},
+				success:function(data){
+					console.log('adduser success');
+					location.href="/console/userSet";
+				},
+				error:function(err){
+					console.log(err);
+					alert(JSON.parse(err.responseText).error);
+				}
+			})
+		});
+
+
+});
+
+
+</script>
+
+</html>

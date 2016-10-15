@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<title>首页-大连海之韵国际旅行社</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<!-- jQuery AND jQueryUI -->
+	<script type="text/javascript" src="/js/libs/jquery/1.6/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="/css/min.css">
+	<script type="text/javascript" src="/js/min.js"></script>
+	<script type="text/javascript" src="/content/settings/main.js"></script>
+	<link rel="stylesheet" href="/content/settings/style.css">
+</head>
+<body>
+<form id="id1" method="post" action="./?0-1.IFormSubmitListener-form"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id1_hf_0" id="id1_hf_0"></div>
+	<!-- HEAD -->
+	<div id="head">
+		<div class="left">
+			Hi, <a href="center.html"><span><%= user?user.account:' ' %></span></a> |
+			<a href="/console/logout">退出</a>
+		</div>
+
+	</div>
+
+	<!--SIDEBAR-->
+	<div id="sidebar">
+		<ul>
+			<li class="nosubmenu current"><a href="/console"> <img src="/img/icons/menu/inbox.png" alt=""> 控制台
+			</a></li>
+			<li class=""><a href="#"><img src="/img/icons/menu/layout.png" alt="">
+				微网站管理</a>
+				<ul style="display: none;">
+					<li><a href="/console/inform">签证进度</a></li>
+					<li><a href="/console">主页管理</a></li>
+					<li><a href="/console">航班查询</a></li>
+					<li><a href="/console">天气查询</a></li>
+					<li><a href="/console">汇率转换</a></li>
+				</ul></li>
+			<li class=""><a href="#"><img src="/img/icons/menu/users.png" alt="">
+				微会员管理</a>
+				<ul style="display: none;">
+					<li><a href="/console/complain">投诉管理</a></li>
+					<li><a href="/console/message">留言管理</a></li>
+				</ul></li>
+			<li class="current"><a href="#"><img src="/img/icons/menu/idea.png" alt=""> 后台管理</a>
+			<ul>
+				<li><a href="/console/userSet">用户设置</a></li>
+				<li><a href="/console/visaSet">签证设置</a></li>
+			</ul></li>
+		</ul>
+	</div>
+	
+	<!--CONTENT-->
+
+	<div id="content" class="white">
+		<h1>
+			<img src="/img/icons/dashboard.png" alt=""> 控制台
+		</h1>
+		<div class="bloc left">
+			<div class="title">快捷入口<a href="#" class="toggle"></a></div>
+			<div class="content dashboard" style="display: block;">
+				<div class="center" style="display: block; width: auto;">
+					<a href="/console/inform" class="shortcut"> <img src="/img/page.png" alt="" width="48" height="48"> 签证进度
+					</a> <a href="/console/visaSet" class="shortcut"> <img src="/img/contact.png" alt="" width="48" height="48"> 签证设置
+				</a> <a href="/console/message" class="shortcut"> <img src="/img/checkin.png" alt="" width="48" height="48"> 留言管理
+				</a> <a href="/console/complain" class="shortcut last"> <img src="/img/event.png" alt="" width="48" height="48"> 投诉管理
+				</a>
+					<div class="cb"></div>
+				</div>
+			</div>
+		</div>
+		<div class="bloc right">
+			<div class="title">常用功能<a href="#" class="toggle"></a></div>
+			<div class="content">
+				<a href="/console" class="shortcut"> <img src="/img/icons/window.png" alt=""> 主页管理
+				</a> <a href="/console" class="shortcut"> <img src="/img/icons/search.png" alt="" width="32" height="32"> 航班查询
+			</a> <a href="/console" class="shortcut"> <img src="/img/icons/chart.png" alt="" width="32" height="32"> 天气查询
+			</a> <a href="/console" class="shortcut"> <img src="/img/icons/money.png" alt="" width="32" height="32"> 汇率转换
+			</a> <a href="/console/message" class="shortcut"> <img src="/img/icons/posts.png" alt="" width="32" height="32"> 留言管理
+			</a> <a href="/console/secure" class="shortcut"> <img src="/img/icons/smiley-happy.png" alt="" width="32" height="32">
+				个人中心
+			</a>
+				<div class="cb"></div>
+			</div>
+		</div>
+		<div class="cb"></div>
+	</div>
+	<div class="cb"></div>
+
+	<div class="bloc"></div>
+</form>
+
+</body></html>

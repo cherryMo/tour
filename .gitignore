@@ -1,0 +1,9 @@
+#################
+## Eclipse
+#################
+
+/node_modules/
+*.bat
+*.log
+/dbdata
+

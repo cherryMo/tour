@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+	<link rel="stylesheet" href="/css/client.css">
+	<script src="/javascripts/jquery-2.2.3.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/javascripts/common.js"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: MicroSoft Yahei;
+			font-size: 14px;
+		}
+		ul {
+			list-style: none;
+		}
+		body {
+			min-width: 900px;
+		}
+		.top {
+			height:58px;
+			width: 100%;
+		}
+		.logo {
+			height:58px;
+			width:111px;
+			display:inline-block;
+			background:url('/images/icon/logo.png') no-repeat;
+		}
+		header ul {
+			float:right;
+			padding-right: 20px;
+		}
+		header ul li {
+			height:58px;
+			line-height: 58px;
+			display:inline-block;
+			margin: 0 16px;
+			text-align: center;
+			list-style: none;
+		}
+		header li a {
+			text-decoration: none;
+			color: #000;
+		}
+		.banner {
+			height:56px;
+			background: url('/images/icon/banner.jpg');
+		}
+		.main {
+			padding:12px 36px;
+		}
+		.main_header{
+			height:45px;
+			font-size: 10px;
+			line-height: 45px;
+		}
+		.main_header img {
+			position: relative;
+			top:5px;
+		}
+		.main_header span {
+			margin:0 8px;
+			font-size: 12px;
+		}
+		.main_header a {
+			text-decoration: none;
+		}
+		.wrap {
+			padding:5px 36px;
+		}
+		.main_left {
+			width:250px;
+			/*border:1px solid #ccc;*/
+			float:left;
+		}
+		.wrap .content {
+			margin-left: 250px;
+			/*border:1px solid red;*/
+			background:#f0f0f0;
+			padding-left: 48px;
+			margin-top: 10px;
+			/*height:100px;*/
+		}
+		.main_left li{
+			margin:8px 0;
+			letter-spacing:1px;
+		}
+		.main_left li span{
+			cursor:pointer;
+		}
+		.main_left li span:hover{
+			font-size: 16px;
+			color:#ffcb39;
+			font-weight: bold;
+		}
+		.content table {
+			border-spacing: 16px;
+		}
+		.content input{
+			border:none;
+			width:200px;
+			padding:5px 10px;
+		}
+		.content select{
+			border:none;
+			width:220px;
+			padding:5px 10px;
+		}
+		.content textarea {
+			width:200px;
+			height:100px;
+			padding:10px;
+			border:none;
+		}
+		.btn {
+			border:none;
+			background:#ffcb39;
+			padding:5px 10px;
+		}
+		.clickStatus{
+			font-size: 16px;
+			color:#ffcb39;
+			font-weight: bold;
+		}
+		.footer {
+			position:absolute;
+			bottom: 0;
+			text-align: center;
+			height:60px;
+			line-height: 60px;
+			width:100%;
+			background:#868789;
+		}
+	</style>	
+</head>
+<body>
+
+	<header>
+		<div class="top">
+			<div class="logo"></div>
+			<ul>
+				<li><a href="#">首页|HOMEPAGE</a></li>
+				<li><a href="/client/center"><%= custom?custom.name:custom.account%> |ABOUTME</a></li>
+				<li><a href="/client/logout">退出|EXIT</a></li>
+			</ul>
+		</div>
+		<div class="banner"></div>
+	</header>
+	<div class="main">
+		<div class="main_header">
+			<img src="/images/icon//top.png" alt="">
+			<span>您所在的位置|Your Position</span>
+			<span><a href="#">首页</a></span>
+			<span>></span>
+			<span><a href="/client/center">个人中心</a></span>
+		</div>
+		<div class="wrap">
+			<div class="main_left">
+				<ul>
+					<li><span class="js-center" data-id="infor">基本资料 | Information</span></li>
+					<li><span class="js-center" data-id="visa-apply">申请签证 | Visa Apply</span></li>
+					<li><span class="js-center" data-id="visa-search">进度查询 | Visa Search</span></li>
+					<li><span class="js-center" data-id="leave-msg">留言 | Leave Message</span></li>
+					<li><span class="js-center" data-id="complain">投诉 | Complain</span></li>
+					<li><span class="js-center" data-id="secure">安全中心 | Secure</span></li>
+				</ul>
+			</div>
+			<div class="content">
+		
+				<!-- 有可能会用到的提示信息 -->
+				<div>
+					<% if(success){%>
+						<div><%= success %></div>
+					<% } %>
+					<% if(error) { %>
+						<div><%= error %></div>
+					<% } %>
+				</div>
+
+				<!-- start 个人信息	 -->
+				<div id="infor" class="js-box">
+					<form method="post" action="/client/center">
+						<table>
+							<tbody>
+								<tr>
+									<td>账号：</td>
+									<td><input type="text" name="account" id="account" value="<%= custom?custom.account:' '%>"></td>
+								</tr>
+								<tr>
+									<td>姓名：</td>
+									<td><input type="text" name="name" id="name" value="<%= data.name %>"></td>
+								</tr>
+								<tr>
+									<td>性别：</td>
+									<td>
+										<select name="sex" id="sex">
+											<% if(data.sex=='男'){ %>
+												<option value="男" selected>男</option>
+												<option value="女" >女</option>	
+											<% }else{ %>
+												<option value="男" >男</option>
+												<option value="女" selected>女</option>	
+											<% } %>
+											
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td>身份证号：</td>
+									<td><input type="text" name="id_number" id="id-number" value="<%= data.id_number %>"></td>
+								</tr>
+								<tr>
+									<td>联系方式：</td>
+									<td><input type="text" name="tel" id="tel" value="<%= data.tel %>"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><button style="width:220px;" class="btn" type="submit">确定修改</button></td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+				<!-- end 基本信息	 -->
+
+
+				<!-- start 申请签证	 -->
+				<div id="visa-apply" class="js-box">
+					<form action="/client/applyVisa" method="post">
+						<table>
+							<tr>
+								<td></td>
+								<td><div id="visaMsg"></div></td>
+							</tr>
+							<tr>
+								<td>国家：</td>
+								<td>
+									<select name="country" id="country">
+									<% country.forEach(function(o,i){ %>
+										<option value="<%= o.id %>"><%= o.country %></option>
+									<% }) %>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><button style="width:220px;" class="btn" type="button" id="subVisa">确认申请</button></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<!-- end 申请签证	 -->
+
+
+				<!-- start 签证信息查询	 -->
+				<div id="visa-search" class="js-box">
+					<form  action="/client/search" method="post">
+						<table>
+							<tr>
+								<td>请输入身份证号:</td>
+								<td>
+									<input name="id_number" type="text" id="IDcard"/>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<button style="width:220px;" class="btn" type="button" id="subSearch" />提交</button>
+								</td>
+							</tr>
+						</table>
+			        </form>
+			        <div style="margin:6px 15px;">
+			        	<h2 style="margin:0 80px 0 0;padding:5px 0;font-size:16px;border-bottom:1px solid #ccc">查询结果：</h2>
+			        	<table style="border-spacing:8px;" id="search-results">
+			        		
+			        	</table>
+			        </div>
+				</div>
+				<!-- end 签证信息查询	 -->
+
+
+				<!-- start 留言	-->
+				<div id="leave-msg" class="js-box">
+					<form>
+						<table>
+							<tr>
+								<td>留言内容：</td>
+								<td><textarea name="content" id="content"></textarea></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<button class="btn" type="button" id="subMsg">提 交</button>
+									<button class="btn" type="reset">重 置</button></td>
+							</tr>
+						</table>
+				    </form>
+				</div>
+				<!-- end 留言	-->
+
+
+				<!-- start 投诉	 -->
+				<div id="complain" class="js-box">
+					<form>
+						<table>
+							<tr>
+								<td>被投诉人：</td>
+								<td>
+									<select name="complaint" id="complaint">
+				                    <% user.forEach(function(o,i){ %>
+				                        <option value="<%= o.id %>"><%= o.account %></option>
+				                    <% }) %>
+				                </select>
+								</td>
+							</tr>
+							<tr>
+								<td>投诉原因：</td>
+								<td><input name="reason" id="reason" type="text"/></td>
+							</tr>
+							<tr>
+								<td>详细说明：</td>
+								<td>
+									<textarea style="width:200px;height:100px;padding:10px;border:none;" name="detail" id="detail"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<button class="btn" style="width:100px;" type="button" id="subComplain">提交</button>
+									<button class="btn" style="width:100px;" type="reset">重置</button>
+								</td>
+							</tr>
+						</table>
+				    </form>
+
+				</div>
+				<!-- end 投诉	 -->
+
+
+				<!-- start 安全中心-修改密码	 -->
+				<div id="secure" class="js-box">
+					<form action="/client/changePsw" method="post">
+						<table>
+							<tbody>
+								<tr>
+									<td></td>
+									<td><div id="msg"></div></td>
+								</tr>
+								<tr>
+									<td>原密码：</td>
+									<td>
+										<input type="text" autocomplete="off" id="oldPwd" placeholder="请输入原密码" value="" name="oldPwd">
+									</td>
+								</tr>
+								<tr>
+									<td>新密码：</td>
+									<td>
+										<input type="password" id="firstNewPwd" placeholder="请输入新密码" value="" name="firstNewPwd">
+									</td>
+								</tr>
+								<tr>
+									<td>确认密码：</td>
+									<td>
+										<input type="password" id="secordNewPwd" placeholder="请确认新密码" value="" name="secordNewPwd">
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td style="text-align: center;">
+										<button style="width:100px" class="btn" type="button" name="btnUpd" id="changePsw">修改</button>
+										<button style="width:100px" class="btn" type="reset" value="">重置</button>
+									</td>
+								</tr>
+							</tbody>
+
+						</table>
+					</form>
+				</div>
+				<!-- end 安全中心-修改密码	 -->
+
+			</div>
+		</div>
+	</div>
+	<% include footer.ejs%>
+	<script>
+
+	$(document).ready(function(){
+
+		//init
+		$('.js-box').hide();
+		$('#infor').show();
+
+		//导航显示事件绑定
+		$('.js-center').click(function(){
+			var eleId= $(this).data('id');
+			$('.js-center').removeClass('clickStatus');
+			$(this).addClass('clickStatus');
+			// console.log(eleId);
+			$('.js-box').hide();
+			$('#'+eleId).show();
+		})
+
+		//修改密码
+		$('#changePsw').click(function(){
+			var oldPwd = $('#oldPwd').val();
+			var firstNewPwd = $('#firstNewPwd').val();
+			var secordNewPwd = $('#secordNewPwd').val();
+			var msg = $('#msg');
+			if(!oldPwd || !firstNewPwd || !secordNewPwd){
+				alert('请输入原密码新密码！');
+				return false;
+			}
+			if(firstNewPwd != secordNewPwd){
+				alert('两次密码不一致！');
+				return false;
+			}
+			if(confirm('确定修改密码？')){
+				$.ajax({
+					type:'post',
+					dataType:'json',
+					data:{oldPwd:oldPwd, firstNewPwd:firstNewPwd,secordNewPwd:secordNewPwd},
+					url:'/client/changePsw',
+					success:function(data){
+						msg.html('修改成功！');
+					},
+					error: function(err){
+						msg.html(JSON.parse(err.responseText).error);
+					}
+				});
+			};
+		});
+
+		//申请签证
+		$('#subVisa').click(function(){
+			var country = $('#country option:selected').text();
+			console.log('start to apply ',country)
+			$.ajax({
+				url:'/client/applyVisa',
+				type:'post',
+				dataType:'json',
+				data:{country:country},
+				success: function(data){
+					alert('申请成功，可以使用身份证号查询签证进度');
+				},
+				error: function(err){
+					console.log(err);
+					alert('请完善个人信息后重新申请！');
+				}
+			})
+		});
+
+
+		//签证查询
+		$('#subSearch').click(function(){
+            var id_number = $('#IDcard').val();
+            if(!id_number){
+                alert('请输入查询的身份证号');
+                return;
+            }
+            $.ajax({
+                url:'/client/search',
+                type:'post',
+                dataType:'json',
+                data:{id_number:id_number},
+                success:function(data){
+                    // console.log(data);
+                    console.log(data, typeof data);
+                    console.log($('#search-results'));
+                    var htmlstr = '';
+                    // alert('success');
+                   data.data.forEach(function(obj,i){
+                    	console.log(obj)
+                    		obj.forEach(function(o,i){
+                    			console.log(o)
+                    			htmlstr += '<tbody><tr><td>身份证：</td><td>'+ (o.id_number||'无此信息')+'</td></tr><tr><td>姓名：</td><td>'+(o.name || '无此信息')+'</td></tr><tr><td>签证国家：</td><td>'+(o.country || '无此信息')+'</td></tr><tr><td>审核进度：</td><td>'+(o.process || '无此信息')+'</td></tr></tbody>';
+					});	
+                    		})
+			$('#search-results').html(htmlstr);			
+                },
+                error:function(err){
+                    console.log(err);
+                    alert('出错了，请重试');
+                }
+
+            })
+        });
+
+
+		//留言
+		$('#subMsg').click(function(){
+            var content = $('#content').val();
+            if(!content){
+                alert('请填写留言内容！');
+                return;
+            }
+            $.ajax({
+                url: '/client/leaveMsg',
+                type:'post',
+                dataType:'json',
+                data:{content:content},
+                success:function(data){
+                    alert('留言成功！');
+                },
+                error: function(err){
+                    console.log(err);
+                    alert(JSON.parse(err.responseText).error);
+                }
+            })
+        })
+
+		//投诉
+		$('#subComplain').click(function(){
+            var complaint = $('#complaint').val();
+            var reason = $('#reason').val();
+            var detail = $('#detail').val();
+            if(!complaint || !reason || !detail){
+                alert('请填写完整的投诉信息！');
+                return;
+            }
+            $.ajax({
+                url: '/client/complain',
+                type: 'post',
+                dataType: 'json',
+                data:{complaint: complaint, reason:reason,detail:detail},
+                success: function(data){
+                    console.log(data);
+                    alert('投诉成功，稍后我们将为您处理！');
+                },
+                error: function(err){
+                    console.log(err);
+                    alert('出错了，请重试！');
+                }
+            })
+        })
+
+
+	});
+
+	</script>
+</body>
+</html>

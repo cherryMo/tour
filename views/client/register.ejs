@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<link rel="stylesheet" href="/css/client.css">
+	<script type="text/javascript" src="/javascripts/jquery-2.2.3.min.js" ></script>
+	<script rype="text/javascript" src="/javascripts/common.js"></script>
+	<style>
+		.container{
+			width: 600px;
+			height: 400px;
+			background-color: rgba(255,255,255,0.9);
+			position: absolute;
+			left:50%;
+			top:50%;
+			margin:-200px 0 0 -300px;
+		}
+		.ra{
+			width: 100px;
+			height: 25px;
+			font-size: 20px;
+			/*font-weight: bold;*/
+			/*border-radius: 50%;*/
+			/*background-color: rgb(253,205,61);*/
+			position: relative;
+			left: 32px;
+		}
+		.r1{
+			top: 86px;	
+		}
+		.r2{
+			top: 136px;
+		}
+		.r3{
+			top: 186px;
+		}
+		.di{
+			width: 410px;
+			height: 45px;
+			position: relative;
+			background-color: #fff;
+			left: 125px;
+		}
+		.di input{
+			position: relative;
+			top: 3px;
+			left: 30px;
+			width: 370px;
+			height: 40px;
+			font-size: 150%;
+			border: 0px;
+		}
+		.d1{
+			top: 5px;	
+		}
+		.d2{
+			top: 35px;
+		}
+		.d3{
+			top: 65px;
+		}
+		.bot input{
+			width: 360px;
+			height: 40px;
+			background-color: rgb(253,205,61);
+			position: relative;
+			top: 110px;
+			left: 120px;
+			border-radius: 50px;
+			font-size: 180%;
+			color:#fff; 
+		}
+/*		.bot span{
+			color: #fff;
+			font-size: 200%;
+			position: relative;
+			top: 3px;
+			left: 80px;
+		}*/
+
+	</style>	
+</head>
+<body class="back">
+	<div>
+		<form method="post" action="/client/register" class="form-horizontal" role="form">
+
+		<div class="container">
+			<div class="ra r1">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</div>
+			<div class="ra r2">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</div>
+			<div class="ra r3">确认密码</div>
+			<div class="di d1">
+				<input type="text" name="account" id="account" placeholder="账户|USERNAME"/>
+			</div>
+			<div class="di d2">
+				<input type="password" name="password" id="password" placeholder="密码|PASSWORD"/>
+			</div>
+			<div class="di d3">
+				<input type="password" name="repassword" id="repassword" placeholder="确认密码|CONFIRM PASSWORD"/>
+			</div>
+			<div class="bot">
+				<input type="button" value="注册|Register" id="regBtn">
+			</div>
+		</div>
+
+		<!-- <table>
+			<tbody>
+				<tr>
+					<td></td>
+					<td id="msg"></td>
+				</tr>
+				<tr>
+					<td>账号：</td>
+					<td><input type="text" name="account" id="account"></td>
+				</tr>
+				<tr>
+					<td>密码：</td>
+					<td><input type="password" name="password" id="password"></td>
+				</tr>
+				<tr>
+					<td>重复密码：</td>
+					<td><input type="password" name="repassword" id="repassword"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="button" value="注册" id="regBtn"></td>
+				</tr>
+			</tbody>
+		</table> -->
+	</form>
+
+	</div>
+	
+
+	<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		$('#regBtn').click(function(){
+			var account = $('#account').val();
+			var password = $('#password').val();
+			var repassword = $('#repassword').val();
+			if(!account || !password || !repassword){
+				return alert('请输入用户名或密码！');
+			}
+			if(password!= repassword){
+				return alert('两次密码不一致！');
+			}
+			$.ajax({
+				dataType:'json',
+				type:'post',
+				url:'/client/register',
+				data:{account:account, password:password},
+				success:function(data){
+					console.log('login success');
+					location.href="/client/center";
+				},
+				error:function(err){
+					console.log(err);
+					console.log(JSON.parse(err.responseText).error);
+					alert(JSON.parse(err.responseText).error);
+				}
+			})
+		});
+		
+	})
+
+	</script>
+
+</body>
+</html>
